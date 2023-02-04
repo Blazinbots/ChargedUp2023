@@ -7,15 +7,16 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import frc.robot.Configuration;
 
 /**
  * This is a demo program showing the use of the DifferentialDrive class. Runs the motors with split
  * arcade steering and an Xbox controller.
  */
 public class Robot extends TimedRobot {
-  private final PWMSparkMax m_leftMotor = new PWMSparkMax(0);
-  private final PWMSparkMax m_rightMotor = new PWMSparkMax(1);
+  private final Spark m_leftMotor = new Spark(Configuration.Ports.LeftMotor);
+  private final Spark m_rightMotor = new Spark(Configuration.Ports.RightMotor);
   private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_leftMotor, m_rightMotor);
   private final XboxController m_driverController = new XboxController(0);
 
