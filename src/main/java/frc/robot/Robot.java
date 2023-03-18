@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import frc.robot.Arm;
 import frc.robot.Configuration;
 
 /**
@@ -19,6 +20,7 @@ public class Robot extends TimedRobot {
   private final Spark m_rightMotor = new Spark(Configuration.Ports.RightMotor);
   private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_leftMotor, m_rightMotor);
   private final XboxController m_driverController = new XboxController(0);
+  private final Arm m_arm = new Arm();
 
   @Override
   public void robotInit() {
@@ -26,6 +28,7 @@ public class Robot extends TimedRobot {
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
     m_rightMotor.setInverted(true);
+    m_arm.init();
   }
 
   @Override
@@ -34,5 +37,12 @@ public class Robot extends TimedRobot {
     // That means that the Y axis of the left stick moves forward
     // and backward, and the X of the right stick turns left and right.
     m_robotDrive.arcadeDrive(-m_driverController.getLeftY(), -m_driverController.getRightX());
+    
+    if(m_driverController.getAButtonPressed()) {
+      m_arm.setPosition(Arm.POSITION.UP);
+    } 
+    else if(m_driverController.getBButtonPressed()) {
+      m_arm.setPosition(Arm.POSITION.DOWN);
+    }
   }
 }
