@@ -50,10 +50,19 @@ public class Robot extends TimedRobot {
     else if(m_driverController.getBButtonPressed()) {
       m_arm.setPosition(Arm.POSITION.DOWN);
     }
-
+    /* 
+    if( m_driverController.getXButtonPressed() ) {
+      m_Intake.setSpeed(0.2);
+    } else if (m_driverController.getYButtonPressed() ) {
+      m_Intake.setSpeed(0.0);
+    } /*else {
+      m_Intake.setSpeed(0.0);
+    }*/
+    
     if( m_driverController.getXButtonPressed() ) {
       m_Intake.opencloseIntake();
     }
+    
   }
 
 }

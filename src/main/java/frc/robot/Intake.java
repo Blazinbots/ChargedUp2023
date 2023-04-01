@@ -11,7 +11,9 @@ public class Intake {
   public void init() {
       m_Timer = new Timer();
       m_Timer.reset();
+      m_Timer.start();
       m_intake = new Spark(Configuration.Ports.Intake_PWM_Channel);
+      m_intake.set(0.0);
   }
 
   public void opencloseIntake() {
@@ -22,17 +24,25 @@ public class Intake {
 
     m_speed = -m_speed;
     m_Timer.reset();
+    m_Timer.start();
     m_lockIntakeMove = true;
     
   }
 
   public void teleopPeriodic() {
     // Move motor for 0.2 seconds
-    if(m_lockIntakeMove && !m_Timer.hasElapsed(0.2)) {
+    if(m_lockIntakeMove && !m_Timer.hasElapsed(Configuration.Intake.moveTime)) {
       m_intake.set(m_speed);
     } else {
       m_lockIntakeMove = false;
+      m_intake.set(0.0);
+      m_Timer.stop();
     }
+
+  }
+
+  public void setSpeed(double speed) {
+    m_intake.set(speed);
 
   }
 
