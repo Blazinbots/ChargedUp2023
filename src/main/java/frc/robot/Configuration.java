@@ -20,5 +20,20 @@ public class Configuration {
     public class Ports {
         static final int LeftMotor = 0;
         static final int RightMotor = 1;
+        static final int Intake_PWM_Channel = 2;
+    }
+
+    public class Intake {
+        static final double speed = 0.1;
+    }
+
+    public class Arm {
+        static final int deviceID = 2; // CAN Device ID for SparkMax
+
+        // Number of rotations of the motor. Note that the output movement will be geared down:
+        // 16:1 planetary gearbox + 26:16 cog ratio. So this should roughly correspond to
+        // rotations/26
+        static final int upPosition = 4;
+        static final int downPosition = 0;
     }
 }

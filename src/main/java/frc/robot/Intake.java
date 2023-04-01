@@ -4,15 +4,14 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class Intake {
   private Timer m_Timer;
-  private static final int PWM_CHANNEL = 2;
   private Spark m_intake;
-  private double m_speed = -0.1;
+  private double m_speed = -Configuration.Intake.speed;
   private boolean m_lockIntakeMove = false;
 
   public void init() {
       m_Timer = new Timer();
       m_Timer.reset();
-      m_intake = new Spark(PWM_CHANNEL);
+      m_intake = new Spark(Configuration.Ports.Intake_PWM_Channel);
   }
 
   public void opencloseIntake() {

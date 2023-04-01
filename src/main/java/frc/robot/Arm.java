@@ -6,18 +6,12 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Arm {
-  private static final int deviceID = 2;
   private CANSparkMax m_motor;
   private SparkMaxPIDController m_pidController;
   private RelativeEncoder m_encoder;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
-  // Number of rotations of the motor. Note that the output movement will be geared down:
-  // 16:1 planetary gearbox + 26:16 cog ratio. So this should roughly correspond to
-  // rotations/26
-  private int upPosition = 4; 
-  private int downPosition = 0;
-  private double m_startingPosition = 0;
-  private int m_setPoint = downPosition;
+  private int m_setPoint = Configuration.Arm.downPosition;
+  private double m_startingPosition = 0.0;
 
   public enum POSITION {
     UP,
@@ -26,7 +20,7 @@ public class Arm {
 
   public void init() {
       // initialize motor
-      m_motor = new CANSparkMax(deviceID, MotorType.kBrushless);
+      m_motor = new CANSparkMax(Configuration.Arm.deviceID, MotorType.kBrushless);
 
       /**
        * The restoreFactoryDefaults method can be used to reset the configuration parameters
@@ -70,7 +64,7 @@ public class Arm {
     //calcuate rotations
     int numRotations = 0;
     double currentPosition = m_encoder.getPosition();
-    if(Math.abs(currentPosition - m_setPoint) > 0.1) {
+    if(Math.abs(currentPosition - (double)m_setPoint) > 0.1) {
       //NO OP
       System.out.println("Not moving Arm. Too far from set point pos: " + currentPosition + " set point " + m_setPoint);
       return;
@@ -78,9 +72,9 @@ public class Arm {
     
     // Difference is negated because the Neo is positioned on the right (counter-clockwise is UP)
     if(POS == POSITION.UP) {
-      m_setPoint = upPosition;
+      m_setPoint = Configuration.Arm.upPosition;
     } else { // Assume Down position
-      m_setPoint = downPosition;
+      m_setPoint = Configuration.Arm.downPosition;
     }
     numRotations = -(m_setPoint - (int)currentPosition);
     m_pidController.setReference(numRotations, CANSparkMax.ControlType.kPosition);
