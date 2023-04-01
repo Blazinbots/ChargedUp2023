@@ -9,13 +9,6 @@ public class Intake {
   private double m_speed = -0.1;
   private boolean m_lockIntakeMove = false;
 
-  private boolean m_intake_isOpen = true;
-
-  public enum POSITION {
-    UP,
-    DOWN
-  }
-
   public void init() {
       m_Timer = new Timer();
       m_Timer.reset();
@@ -29,7 +22,6 @@ public class Intake {
     }
 
     m_speed = -m_speed;
-    m_intake_isOpen = !m_intake_isOpen;
     m_Timer.reset();
     m_lockIntakeMove = true;
     
