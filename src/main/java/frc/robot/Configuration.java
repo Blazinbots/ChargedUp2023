@@ -25,7 +25,7 @@ public class Configuration {
 
     public class Intake {
         static final double speed = 0.2;
-        static final double moveTime = 0.5;
+        static final double moveTime = 1.0;
     }
 
     public class Arm {

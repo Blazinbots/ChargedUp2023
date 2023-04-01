@@ -7,6 +7,7 @@ public class Intake {
   private Spark m_intake;
   private double m_speed = -Configuration.Intake.speed;
   private boolean m_lockIntakeMove = false;
+  private boolean m_isOpen = true;
 
   public void init() {
       m_Timer = new Timer();
@@ -23,6 +24,7 @@ public class Intake {
     }
 
     m_speed = -m_speed;
+    m_isOpen = !m_isOpen;
     m_Timer.reset();
     m_Timer.start();
     m_lockIntakeMove = true;
@@ -35,8 +37,12 @@ public class Intake {
       m_intake.set(m_speed);
     } else {
       m_lockIntakeMove = false;
-      m_intake.set(0.0);
       m_Timer.stop();
+      if(!m_isOpen) {
+        m_intake.set(0.3);
+      } else {
+        m_intake.set(0.0);
+      }
     }
 
   }
