@@ -16,8 +16,8 @@ public class Arm {
   // rotations/26
   private int upPosition = 4; 
   private int downPosition = 0;
-  private double currentPosition = 0;
-
+  private double m_startingPosition = 0;
+  private int m_setPoint = downPosition;
 
   public enum POSITION {
     UP,
@@ -44,6 +44,9 @@ public class Arm {
   
       // Encoder object created to display position values
       m_encoder = m_motor.getEncoder();
+      m_startingPosition = m_encoder.getPosition();
+
+      System.out.println("Encoder pos start " + m_startingPosition);
   
       // PID coefficients
       kP = 0.3; // Default 0.1 (Proportional Gain used to get to setpoint quickly, may overshoot)
@@ -66,18 +69,26 @@ public class Arm {
   public void setPosition(POSITION POS) {
     //calcuate rotations
     int numRotations = 0;
-    currentPosition = m_encoder.getPosition();
-    if(POS == POSITION.UP) {
-      numRotations = upPosition - (int)currentPosition;
-    } else { // Assume Down position
-      numRotations = downPosition - (int)currentPosition;
+    double currentPosition = m_encoder.getPosition();
+    if(Math.abs(currentPosition - m_setPoint) > 0.1) {
+      //NO OP
+      System.out.println("Not moving Arm. Too far from set point pos: " + currentPosition + " set point " + m_setPoint);
+      return;
     }
-
+    
+    // Difference is negated because the Neo is positioned on the right (counter-clockwise is UP)
+    if(POS == POSITION.UP) {
+      m_setPoint = upPosition;
+    } else { // Assume Down position
+      m_setPoint = downPosition;
+    }
+    numRotations = -(m_setPoint - (int)currentPosition);
     m_pidController.setReference(numRotations, CANSparkMax.ControlType.kPosition);
   }
 
   public double getPosition() {
     return m_encoder.getPosition();
   }
+
 }
 
