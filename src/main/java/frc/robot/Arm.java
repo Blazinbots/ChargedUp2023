@@ -12,6 +12,7 @@ public class Arm {
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
   private int m_setPoint = Configuration.Arm.downPosition;
   private double m_startingPosition = 0.0;
+  private boolean m_firstTime = true;
 
   public enum POSITION {
     UP,
@@ -63,6 +64,12 @@ public class Arm {
 
   public void setPosition(POSITION POS) {
 
+    // reset encoder after breaking velcro
+    if(m_firstTime) {
+      m_encoder.setPosition(0.0);
+      m_firstTime = false;
+    }
+    
     // Difference is negated because the Neo is positioned on the right (counter-clockwise is UP)
     if(POS == POSITION.UP) {
       m_setPoint = Configuration.Arm.upPosition;
