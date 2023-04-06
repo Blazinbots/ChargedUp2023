@@ -38,6 +38,7 @@ public class Arm {
   
       // Encoder object created to display position values
       m_encoder = m_motor.getEncoder();
+      m_encoder.setPosition(0.0);
       m_startingPosition = m_encoder.getPosition();
 
       System.out.println("Encoder pos start " + m_startingPosition);
@@ -61,6 +62,16 @@ public class Arm {
   }
 
   public void setPosition(POSITION POS) {
+
+    // Difference is negated because the Neo is positioned on the right (counter-clockwise is UP)
+    if(POS == POSITION.UP) {
+      m_setPoint = Configuration.Arm.upPosition;
+    } else { // Assume Down position
+      m_setPoint = Configuration.Arm.downPosition;
+    }
+    m_pidController.setReference(m_setPoint, CANSparkMax.ControlType.kPosition);
+
+    /* 
     //calcuate rotations
     int numRotations = 0;
     double currentPosition = m_encoder.getPosition();
@@ -78,10 +89,17 @@ public class Arm {
     }
     numRotations = -(m_setPoint - (int)currentPosition);
     m_pidController.setReference(numRotations, CANSparkMax.ControlType.kPosition);
+    */
   }
 
   public double getPosition() {
     return m_encoder.getPosition();
+  }
+
+  // Initial position is inside the robot. This will break free from the velco and
+  // re-init the encoder
+  public void breakVelco() {
+    m_pidController.setReference(1.0,CANSparkMax.ControlType.kPosition);
   }
 
 }
