@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * This is a demo program showing the use of the DifferentialDrive class. Runs the motors with split
@@ -21,6 +22,7 @@ public class Robot extends TimedRobot {
   private final XboxController m_driverController = new XboxController(0);
   private final Arm m_arm = new Arm();
   private final Intake m_Intake = new Intake();
+  private final Timer m_AutoTimer = new Timer();
 
   @Override
   public void robotInit() {
@@ -50,19 +52,27 @@ public class Robot extends TimedRobot {
     else if(m_driverController.getBButtonPressed()) {
       m_arm.setPosition(Arm.POSITION.DOWN);
     }
-    /* 
-    if( m_driverController.getXButtonPressed() ) {
-      m_Intake.setSpeed(0.2);
-    } else if (m_driverController.getYButtonPressed() ) {
-      m_Intake.setSpeed(0.0);
-    } /*else {
-      m_Intake.setSpeed(0.0);
-    }*/
     
     if( m_driverController.getXButtonPressed() ) {
       m_Intake.opencloseIntake();
     }
     
+  }
+
+  @Override
+  public void autonomousInit() {
+    m_AutoTimer.reset();
+    m_AutoTimer.start();
+  }
+
+  @Override
+  public void autonomousPeriodic() {
+    m_arm.breakVelco();
+    if(!m_AutoTimer.hasElapsed(1.0)) {
+      m_robotDrive.arcadeDrive(0.3, 0.0);
+    } else {
+      m_robotDrive.arcadeDrive(0.0, 0.0);
+    }
   }
 
 }
