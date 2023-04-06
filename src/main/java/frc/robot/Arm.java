@@ -29,6 +29,7 @@ public class Arm {
        * parameters will not persist between power cycles
        */
       m_motor.restoreFactoryDefaults();
+      m_motor.setInverted(true); // Want counter-clockwise to be UP
   
       /**
        * In order to use PID functionality for a controller, a SparkMaxPIDController object
@@ -69,7 +70,7 @@ public class Arm {
       m_encoder.setPosition(0.0);
       m_firstTime = false;
     }
-    
+
     // Difference is negated because the Neo is positioned on the right (counter-clockwise is UP)
     if(POS == POSITION.UP) {
       m_setPoint = Configuration.Arm.upPosition;
