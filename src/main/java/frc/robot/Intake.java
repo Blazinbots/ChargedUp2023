@@ -39,7 +39,7 @@ public class Intake {
       m_lockIntakeMove = false;
       m_Timer.stop();
       if(!m_isOpen) {
-        m_intake.set(0.3);
+        m_intake.set(0.5);
       } else {
         m_intake.set(0.0);
       }

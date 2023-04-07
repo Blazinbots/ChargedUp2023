@@ -67,9 +67,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    m_arm.breakVelco();
-    if(!m_AutoTimer.hasElapsed(1.0)) {
-      m_robotDrive.arcadeDrive(0.3, 0.0);
+    //m_arm.breakVelco();
+    if(!m_AutoTimer.hasElapsed(3.0)) {
+      m_robotDrive.arcadeDrive(0.6, 0.0);
     } else {
       m_robotDrive.arcadeDrive(0.0, 0.0);
     }
